@@ -1,15 +1,10 @@
 ﻿using System.Threading.Channels;
 using LIBRARY_TERMINAL;
 
-Book book = new Book();
-
-try
+internal class Program
 {
-    Console.WriteLine("Search for Book by Author or Book Title?");
-    book.Author = Console.ReadLine();
-
-}
-catch (NullReferenceException)
-{
-
+    private static void Main(string[] args)
+    {
+        return;
+    }
 }
