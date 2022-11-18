@@ -2,7 +2,7 @@
 {
     public enum BookStatus
     {
-        OnShelf,
-        CheckedOut
+        OnShelf, // 0
+        CheckedOut // 1
     }
 }
