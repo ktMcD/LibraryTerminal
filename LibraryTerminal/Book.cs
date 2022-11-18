@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 namespace LIBRARY_TERMINAL
 {
     public class Book
@@ -38,10 +38,14 @@ namespace LIBRARY_TERMINAL
             this.DueDate = today.AddDays(14);
 
         }
-        public void ReturnABook(string bookTitle)
+		
+		public void ReturnABook(string bookTitle)
         {
-            //Set Book.Status = 0;
-            //Delete Book.DueDate
+            
+            BookStatus = 0;
+            DueDate = DateTime.Today;
+             
         }
     }
 }
+
