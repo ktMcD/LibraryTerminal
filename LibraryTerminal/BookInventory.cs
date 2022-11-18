@@ -20,7 +20,6 @@
 
         public void PopulateBookInventory()
         {
-            
             Books.Add(new Book("The Great Gasby", "F. Scott Fitzgerald"));
             Books.Add(new Book("War and Peace", "Leo Tolstoy"));
             Books.Add(new Book("The Odyssey", "Homer"));
@@ -36,7 +35,6 @@
             Books.Add(new Book("1984", "George Orwell"));
             Books.Add(new Book("Harry Potter and the Philospher's Stone", "J.K. Rowling"));
             Books.Add(new Book("The Lord of the Rings", "J.R.R. Tolkien"));
-
         }
 
         public void DisplayBookList()

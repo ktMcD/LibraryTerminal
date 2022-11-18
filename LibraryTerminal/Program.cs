@@ -1,4 +1,4 @@
-﻿using System.Threading.Channels;
+﻿ using System.Threading.Channels;
 using LIBRARY_TERMINAL;
 
 internal class Program
@@ -7,6 +7,7 @@ internal class Program
     private static void Main(string[] args)
     {
         Program testLibrary = new Program();
+        // call LibraryVisit from here and let LibraryVisit drive the whole thing
         testLibrary.TryMe();
     }
 
