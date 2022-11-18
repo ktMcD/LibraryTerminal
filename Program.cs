@@ -1,10 +1,17 @@
-﻿using System.Threading.Channels;
+﻿using System.Security.Cryptography.X509Certificates;
+using System.Threading.Channels;
 using LIBRARY_TERMINAL;
 
-internal class Program
+public class Program
 {
-    private static void Main(string[] args)
+    public static void Main(string[] args)
     {
         return;
+
+        
     }
+
+
+    
+    
 }
