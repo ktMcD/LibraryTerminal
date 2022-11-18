@@ -3,15 +3,17 @@ namespace LIBRARY_TERMINAL
 {
     public class Book
     {
+        public DateTime today = DateTime.Today;
         public string BookName { get; set; }
         public string Author { get; set; }
-        public BookStatus BookStatus { get; set; }
-        public DateOnly DueDate { get; set; }
+        public BookStatus Status { get; set; }
+        public  DateTime DueDate { get; set; } = new DateTime();
         public Book(string author, string bookName)
         {
             BookName = bookName;
             Author = author;
-            BookStatus = 0;
+            Status = 0;
+
         }
         public List<string> SearchBookByAuthor(List<Book> book, string author)
         {
@@ -23,12 +25,12 @@ namespace LIBRARY_TERMINAL
             var searchBookByTitle = book.Where(x => x.BookName == title).Select(x => x.BookName).ToList();
             return searchBookByTitle;
         }
-        public void CheckOutBook(string bookTitle)
+        public void CheckOutBook(List<Book> book, string bookTitle)
         {
-            /* Book.Status 1 = checked out */
-            /* Book.Status 0 = checked in */
-            //Set Book.Status = 1;
-            //Set DueDate + 14 days;
+            
+            this.Status = (BookStatus)1;
+            this.DueDate = today.AddDays(14);
+
         }
         public void ReturnABook(string bookTitle)
         {
