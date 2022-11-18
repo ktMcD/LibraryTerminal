@@ -13,15 +13,21 @@ namespace LIBRARY_TERMINAL
             Author = author;
             Status = 0;
         }
-        public List<string> SearchBookByAuthor(List<Book> book, string author)
+
+        public List<Book> SearchBookByAuthor(List<Book> book, string author)
         {
-            var searchBookByAuthor = book.Where(x => x.Author == author).Select(x => x.BookName).ToList();
+            var searchBookByAuthor = book.Where(x => x.Author.Contains(author, StringComparison.InvariantCultureIgnoreCase)).Select(x => x).ToList();
             return searchBookByAuthor;
+
         }
-        public List<string> SearchBookByTitle(List<Book> book, string title)
+
+        public List<Book> SearchBookByTitle(List<Book> book, string title)
         {
-            var searchBookByTitle = book.Where(x => x.BookName == title).Select(x => x.BookName).ToList();
+            var searchBookByTitle = book.Where(x => x.BookName.Contains(title, StringComparison.InvariantCultureIgnoreCase)).Select(x => x).ToList();
+
+
             return searchBookByTitle;
+
         }
         public void CheckOutBook(string bookTitle)
         {
