@@ -5,13 +5,13 @@ namespace LIBRARY_TERMINAL
     {
         public string BookName { get; set; }
         public string Author { get; set; }
-        public BookStatus BookStatus { get; set; }
+        public BookStatus Status { get; set; }
         public DateOnly DueDate { get; set; }
-        public Book(string author, string bookName)
+        public Book(string bookName, string author)
         {
             BookName = bookName;
             Author = author;
-            BookStatus = 0;
+            Status = 0;
         }
         public List<string> SearchBookByAuthor(List<Book> book, string author)
         {
