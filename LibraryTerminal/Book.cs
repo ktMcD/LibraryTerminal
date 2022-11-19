@@ -8,6 +8,12 @@ namespace LIBRARY_TERMINAL
         public string Author { get; set; }
         public BookStatus Status { get; set; }
         public  DateTime DueDate { get; set; } = new DateTime();
+
+        public Book()
+        {
+
+        }
+
         public Book(string author, string bookName)
         {
             BookName = bookName;
@@ -15,6 +21,7 @@ namespace LIBRARY_TERMINAL
             Status = 0;
 
         }
+
 
         public List<Book> SearchBookByAuthor(List<Book> book, string author)
         {
@@ -42,7 +49,7 @@ namespace LIBRARY_TERMINAL
 		public void ReturnABook(string bookTitle)
         {
             
-            BookStatus = 0;
+            Status = 0;
             DueDate = DateTime.Today;
              
         }
