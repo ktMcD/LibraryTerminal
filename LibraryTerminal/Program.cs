@@ -1,19 +1,18 @@
 ﻿ using System.Threading.Channels;
-using LIBRARY_TERMINAL;
+using LibraryTerminal;
 
-internal class Program
+public class Program
 {
-    BookInventory library = new BookInventory();
-    private static void Main(string[] args)
-    {
-        Program testLibrary = new Program();
-        // call LibraryVisit from here and let LibraryVisit drive the whole thing
-        testLibrary.TryMe();
-    }
 
-    public void TryMe()
+    public static void Main(string[] args)
     {
-        library.DisplayBookList();
+        LibraryConsole libraryVisit = new LibraryConsole();
+        Console.WriteLine();
+        Console.WriteLine("Library Console says, \"Initializing...\"");
+        Console.WriteLine();
+        libraryVisit.UseLibraryConsole();
+        Console.WriteLine("Library Console says, \"Shutting down...\"");
+        return;
     }
+    
 }
-

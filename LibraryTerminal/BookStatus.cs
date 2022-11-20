@@ -1,4 +1,4 @@
-﻿namespace LIBRARY_TERMINAL
+﻿namespace LibraryTerminal
 {
     public enum BookStatus
     {

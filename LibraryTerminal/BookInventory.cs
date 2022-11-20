@@ -1,14 +1,20 @@
-﻿namespace LIBRARY_TERMINAL
+﻿using Microsoft.VisualBasic;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Xml.Serialization;
+
+namespace LibraryTerminal
 {
     public class BookInventory
     {
         public List<Book> Books = new List<Book>();
 
-        const string bookInventoryPath = @"c:\Temp\BookInventory.txt";
+        const string bookInventoryDocPath = @"c:\Temp\BookInventory.txt";
 
         public BookInventory()
         {
-            if (File.Exists(bookInventoryPath))
+            if (File.Exists(bookInventoryDocPath))
             {
                 ReadInBookInventory();
             }
@@ -43,47 +49,152 @@
             {
                 if (book.Status == BookStatus.OnShelf)
                 {
-                    Console.WriteLine($"{book.Title,-45} --- {book.Author,-25} --- {"Available",10}");
+                    Console.WriteLine($"{book.Title,-45} --- {book.Author,-25} --- {"Available",15}");
                 }
                 else
                 {
-                    Console.WriteLine($"{book.Title,-45} --- {book.Author,-25} --- Due: {book.DueDate:,10:d}");
+                    Console.WriteLine($"{book.Title,-45} --- {book.Author,-25} --- Due: {book.DueDate, 10:d}");
                 }
             }
+            Console.WriteLine();
         }
 
         public void RecordBookInventory()
         {
-            StreamWriter bookInventoryRecorder = new StreamWriter(bookInventoryPath, false);
-            foreach (Book book in Books)
+            StreamWriter bookInventoryRecorder = new StreamWriter(bookInventoryDocPath, false);
+            if (Directory.Exists(@"c:\Temp"))
             {
-                if (book.Status == BookStatus.OnShelf)
+                try
                 {
-                    bookInventoryRecorder.WriteLine($"{book.Title,-45}|{book.Author,-25}|{"Available",10}");
+                    foreach (Book book in Books)
+                    {
+                        bookInventoryRecorder.WriteLine($"{book.Title}|{book.Author}|{book.Status}|{book.DueDate:d}");
+                    }
+                    bookInventoryRecorder.Flush();
+                    bookInventoryRecorder.Close();
                 }
-                else
+                catch (System.IO.IOException someMysteriousThing)
                 {
-                    bookInventoryRecorder.WriteLine($"{book.Title,-45}|{book.Author,-25}|{book.DueDate:,10:d}");
+                    bookInventoryRecorder.Flush();
+                    bookInventoryRecorder.Close();
+                    Console.WriteLine(someMysteriousThing.ToString());
+                    return;
                 }
             }
-            bookInventoryRecorder.Flush();
-            bookInventoryRecorder.Close();
+            else
+            {
+                // we could direct the program to add a directory here, but it's ok to just leave for now
+                // and it's just impolite to create directories and stuff without permission
+                Communication.TalkToUser("We can't write the book inventory to this local computer\n" +
+                                         "because the temp directory on your c drive doesn't exist. Sorry!");
+            }
         }
 
         public void ReadInBookInventory()
         {
-            /*
-            StreamReader reader = new StreamReader(bookFilePath);
+            string rawText;
+            string[] inventoryFields = new string[4];
+            BookStatus bookStat;
+            DateTime bookDueDate;
+
+            StreamReader bookInventoryReader = new StreamReader(bookInventoryDocPath);
             while (true)
             {
-                string line = reader.ReadLine();
+                rawText = bookInventoryReader.ReadLine();
+                if (rawText != null)
+                {
+                    inventoryFields = rawText.Split('|'); //using string.split() method to split the string.
+                    bookStat = (BookStatus)Enum.Parse(typeof(BookStatus), inventoryFields[2]);
+                    bookDueDate = DateTime.Parse(inventoryFields[3]); // not need to validate since file is auto-generated
+                    Books.Add(new Book(inventoryFields[0], inventoryFields[1], bookStat, bookDueDate));
+                }
                 // Leave the loop if the end of file is reached
-                if (line == null)
+                else
                 {
                     break;
                 }
             }
-            */
+            bookInventoryReader.Close();
+        }
+        public List<Book> SearchBookByAuthor(string author)
+        {
+            var searchBookByAuthor = Books.Where(x => x.Author.Contains(author, StringComparison.InvariantCultureIgnoreCase)).Select(x => x).ToList();
+            return searchBookByAuthor;
+        }
+
+        public void GetBookSearchValue (string titleOrAuthor)
+        {
+            IEnumerable<Book> searchResults = new List<Book>();
+            string patronResponse;
+            if (titleOrAuthor == "title")
+            {
+                Communication.TalkToUser("What title are you looking for?");
+                patronResponse = Communication.ListenToUser();
+                searchResults = SearchBookByTitle(patronResponse);
+            }
+            else
+            {
+                Communication.TalkToUser("What author are you looking for?");
+                patronResponse = Communication.ListenToUser();
+                searchResults = SearchBookByAuthor(patronResponse);
+            }
+
+            DisplaySearchResults(searchResults);
+        }
+
+        public List<Book> SearchBookByTitle(string theTitle)
+        {
+            IEnumerable<Book> searchResults = new List<Book>();
+            var searchBookByTitle = Books.Where(x => x.Title.Contains(theTitle, StringComparison.InvariantCultureIgnoreCase)).Select(x => x).ToList();
+
+
+            return searchBookByTitle;
+
+        }
+
+        public void DisplaySearchResults(IEnumerable<Book> searchResults)
+        {
+            foreach (Book book in searchResults)
+            {
+                if (book.Status == BookStatus.OnShelf)
+                {
+                    Console.WriteLine($"{book.Title,-45} --- {book.Author,-25} --- {"Available",15}");
+                }
+                else
+                {
+                    Console.WriteLine($"{book.Title,-45} --- {book.Author,-25} --- Due: {book.DueDate,10:d}");
+                }
+            }
+        }
+
+        public void CheckOutBook()
+        {
+            string title;
+            Communication.TalkToUser("What title are you checking out?");
+            title = Communication.ListenToUser();
+            foreach (Book book in Books)
+            {
+                if (title == book.Title)
+                {
+                    book.DueDate = DateTime.Today.AddDays(14);
+                    book.Status = (BookStatus)1;
+                }
+            }
+        }
+
+        public void ReturnABook()
+        {
+            string title;
+            Communication.TalkToUser("What title are you checking in?");
+            title = Communication.ListenToUser();
+            foreach (Book book in Books)
+            {
+                if (title == book.Title)
+                {
+                    book.DueDate = DateTime.Now;
+                    book.Status = (BookStatus)0;
+                }
+            }
         }
     }
 }
