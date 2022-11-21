@@ -1,71 +1,48 @@
-using LIBRARY_TERMINAL;
-
+using LibraryTerminal;
 
 
 namespace LibraryTerminal.Tests
 {
     public class LibraryTermTests
     {
-        readonly Book _sutBook = new Book();
-        readonly List<Book> _sutList = new();
-        readonly string _expectedAuthorName = "TestAuthor";
-        readonly string _expectedTitleName = "TestBookName";
-       
+        readonly BookInventory _sutBI = new BookInventory();
+        readonly string _authorName = "Leo Tolstoy";
+        readonly string _titleName = "War and Peace";
 
 
         [Fact]
         public void SearchBookByAuthorListTest()
         {
-          _sutList.Add(new Book("TestAuthor", "TestBookName"));
-           Assert.Equal(typeof(List<Book>), _sutBook.SearchBookByAuthor(_sutList, "TestAuthor").GetType());
-            
+            Assert.Equal(typeof(List<Book>), _sutBI.SearchBookByAuthor(_authorName).GetType());
         }
 
         [Fact]
         public void SearchBookByAuthorTest()
         {
-            _sutList.Add(new Book("TestAuthor", "TestBookName"));
-            var sutBookReturnList = _sutBook.SearchBookByAuthor(_sutList, _expectedAuthorName);
+            _sutBI.PopulateBookInventory();
+            var sutBookReturnList = _sutBI.SearchBookByAuthor(_authorName);
             var authorNameReturned =
-                sutBookReturnList.Where(x => x.Author == "TestAuthor").Select(x => x.Author).FirstOrDefault()!.ToString();
+                sutBookReturnList.Where(x => x.Author == _authorName).Select(x => x.Author).FirstOrDefault()!
+                    .ToString();
 
-            Assert.Equal(_expectedAuthorName, authorNameReturned);
+            Assert.Equal(_authorName, authorNameReturned);
         }
 
         [Fact]
         public void SearchBookByTitleListTest()
         {
-            _sutList.Add(new Book("TestAuthor", "TestBookName"));
-            Assert.Equal(typeof(List<Book>), _sutBook.SearchBookByTitle(_sutList, "TestBookName").GetType());
-
+            Assert.Equal(typeof(List<Book>), _sutBI.SearchBookByTitle(_titleName).GetType());
         }
 
         [Fact]
         public void SearchBookByTitleTest()
         {
-            _sutList.Add(new Book("TestAuthor", "TestBookName"));
-            var sutBookReturnList = _sutBook.SearchBookByTitle(_sutList, _expectedTitleName);
+            _sutBI.PopulateBookInventory();
+            var sutBookReturnList = _sutBI.SearchBookByTitle(_titleName);
             var titleNameReturned =
-                sutBookReturnList.Where(x => x.BookName == "TestBookName").Select(x => x.BookName).FirstOrDefault()!.ToString();
+                sutBookReturnList.Where(x => x.Title == _titleName).Select(x => x.Title).FirstOrDefault()!.ToString();
 
-            Assert.Equal(_expectedTitleName, titleNameReturned);
-
+            Assert.Equal(_titleName, titleNameReturned);
         }
-
-
-        [Fact]
-        public void CheckOutBookTest()
-        {
-            Assert.True(true);
-
-        }
-
-        [Fact]
-        public void ReturnBookTest()
-        {
-            Assert.True(true);
-        }
-
     }
-
 }

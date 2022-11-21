@@ -20,6 +20,7 @@ namespace LibraryTerminal
                 default:
                     break;
             }
+
             Communication.TalkToUser("Would you like to select another menu item?");
             Communication.TalkToUser("Enter \"y\" or \"yes\" to try again; anything else to quit");
             libraryPatronResponse = Communication.ListenToUser();
@@ -27,6 +28,7 @@ namespace LibraryTerminal
             {
                 return false;
             }
+
             return true;
         }
 
@@ -34,7 +36,7 @@ namespace LibraryTerminal
         {
             Communication.TalkToUser("Thank you for visiting Library Console today.");
             Communication.TalkToUser("Please come back another time.");
-            
+
             Console.WriteLine();
             Console.ReadKey();
             Environment.Exit(0);

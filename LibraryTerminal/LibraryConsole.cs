@@ -15,7 +15,7 @@ namespace LibraryTerminal
             string consoleResponse = "";
             bool viewConsoleMenu = true;
             deweyDecimal.DisplayBookList();
-            while(viewConsoleMenu)
+            while (viewConsoleMenu)
             {
                 viewConsoleMenu = false;
                 consoleResponse = ConsoleMenu(); // Gets response and validates range
@@ -28,6 +28,7 @@ namespace LibraryTerminal
                     Navigation.ThankYouAndGoodbye();
                 }
             }
+
             return;
         }
 
@@ -41,7 +42,7 @@ namespace LibraryTerminal
                 Console.WriteLine($"{" |  ",1}{"C",-1} {"Search books by author",-25}{"|",2}");
                 Console.WriteLine($"{" |  ",1}{"D",-1} {"Check out book",-25}{"|",2}");
                 Console.WriteLine($"{" |  ",1}{"E",-1} {"Check in book",-25} {"|",1}");
-                Console.WriteLine($"{" |  ",1}{"Q or X to Quit", -26} {"|",2}");
+                Console.WriteLine($"{" |  ",1}{"Q or X to Quit",-26} {"|",2}");
             }
             Console.WriteLine("  ------------------------------");
             Communication.TalkToUser("What would you like to do today?");
@@ -51,7 +52,7 @@ namespace LibraryTerminal
         }
 
         public string GetMenuSelection()
-        { 
+        {
             string libraryPatronResponse = "";
             bool enterResponseAgain = true;
             while (enterResponseAgain)
@@ -63,15 +64,17 @@ namespace LibraryTerminal
                 if (libraryPatronResponse == "?")
                 {
                     enterResponseAgain = Navigation.TryAgain("invalid entry");
-                    Console.WriteLine($"enterResponseAgain = {enterResponseAgain}"); 
+                    Console.WriteLine($"enterResponseAgain = {enterResponseAgain}");
                     if (!enterResponseAgain)
                     {
                         deweyDecimal.RecordBookInventory();
                         Navigation.ThankYouAndGoodbye();
                     }
                 }
+
                 return libraryPatronResponse;
             }
+
             return libraryPatronResponse;
         }
 
@@ -99,11 +102,7 @@ namespace LibraryTerminal
                     deweyDecimal.RecordBookInventory();
                     Navigation.ThankYouAndGoodbye();
                     break;
-
-            } 
+            }
         }
-
     }
 }
- 
-     

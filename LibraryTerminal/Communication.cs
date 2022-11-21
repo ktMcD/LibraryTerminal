@@ -25,6 +25,5 @@ namespace LibraryTerminal
         {
             return Console.ReadLine().Trim();
         }
-
     }
 }
