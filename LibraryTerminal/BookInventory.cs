@@ -182,7 +182,7 @@ namespace LibraryTerminal
             title = Communication.ListenToUser();
 
 
-            foreach (Book book in Books.Where(x => x.Title.Contains(title, StringComparison.InvariantCultureIgnoreCase)))
+            foreach (Book book in Books.Where(x => x.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase)))
             {
                 book.DueDate = DateTime.Today.AddDays(14);
                 book.Status = BookStatus.CheckedOut;
