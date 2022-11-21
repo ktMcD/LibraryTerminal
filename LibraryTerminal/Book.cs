@@ -1,4 +1,3 @@
-using System.Net;
 namespace LibraryTerminal
 {
     public class Book
@@ -9,14 +8,7 @@ namespace LibraryTerminal
         public BookStatus Status { get; set; }
         public  DateTime DueDate { get; set; } = new DateTime();
 
-        public Book()
-        {
-
-        }
-
-        public Book(string author, string bookName)
-        // at the beginning of a session, if an inventory docuement exists,
-        // we'll want to read in all properties of that book when we create the object
+     
         public Book(string bookTitle, string bookAuthor, BookStatus bookStat, DateTime dueDate)
         { 
             Title = bookTitle;
@@ -42,7 +34,7 @@ namespace LibraryTerminal
 
         public List<Book> SearchBookByTitle(List<Book> book, string title)
         {
-            var searchBookByTitle = book.Where(x => x.BookName.Contains(title, StringComparison.InvariantCultureIgnoreCase)).Select(x => x).ToList();
+            var searchBookByTitle = book.Where(x => x.Title.Contains(title, StringComparison.InvariantCultureIgnoreCase)).Select(x => x).ToList();
 
 
             return searchBookByTitle;

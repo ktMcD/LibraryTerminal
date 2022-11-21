@@ -89,10 +89,10 @@ namespace LibraryTerminal
                     deweyDecimal.GetBookSearchValue("author");
                     break;
                 case "d":
-                    deweyDecimal.CheckOutBook();
+                    deweyDecimal.CheckOutBook("title");
                     break;
                 case "e":
-                    deweyDecimal.ReturnABook();
+                    deweyDecimal.ReturnABook("title");
                     break;
                 case "q":
                 case "x":

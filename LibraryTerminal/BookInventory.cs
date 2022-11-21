@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Reflection;
 using System.Xml.Serialization;
 
 namespace LibraryTerminal
@@ -167,33 +168,34 @@ namespace LibraryTerminal
             }
         }
 
-        public void CheckOutBook()
+        public void CheckOutBook(string title)
         {
-            string title;
-            Communication.TalkToUser("What title are you checking out?");
-            title = Communication.ListenToUser();
-            foreach (Book book in Books)
+            
+            //Communication.TalkToUser("What title are you checking out?");
+            //title = Communication.ListenToUser();
+
+          
+            
+            foreach (Book book in Books.Where(x=>x.Title == title))
             {
-                if (title == book.Title)
-                {
+                
                     book.DueDate = DateTime.Today.AddDays(14);
                     book.Status = (BookStatus)1;
-                }
+                
             }
         }
 
-        public void ReturnABook()
+        public void ReturnABook(string title)
         {
-            string title;
-            Communication.TalkToUser("What title are you checking in?");
-            title = Communication.ListenToUser();
-            foreach (Book book in Books)
+            
+            //Communication.TalkToUser("What title are you checking in?");
+            //title = Communication.ListenToUser();
+            foreach (Book book in Books.Where(x=>x.Title == title))
             {
-                if (title == book.Title)
-                {
+             
                     book.DueDate = DateTime.Now;
                     book.Status = (BookStatus)0;
-                }
+               
             }
         }
     }
