@@ -1,9 +1,8 @@
-﻿ using System.Threading.Channels;
+﻿using System.Threading.Channels;
 using LibraryTerminal;
 
 public class Program
 {
-
     public static void Main(string[] args)
     {
         LibraryConsole libraryVisit = new LibraryConsole();
@@ -14,5 +13,4 @@ public class Program
         Console.WriteLine("Library Console says, \"Shutting down...\"");
         return;
     }
-    
 }

@@ -54,9 +54,10 @@ namespace LibraryTerminal
                 }
                 else
                 {
-                    Console.WriteLine($"{book.Title,-45} --- {book.Author,-25} --- Due: {book.DueDate, 10:d}");
+                    Console.WriteLine($"{book.Title,-45} --- {book.Author,-25} --- Due: {book.DueDate,10:d}");
                 }
             }
+
             Console.WriteLine();
         }
 
@@ -71,6 +72,7 @@ namespace LibraryTerminal
                     {
                         bookInventoryRecorder.WriteLine($"{book.Title}|{book.Author}|{book.Status}|{book.DueDate:d}");
                     }
+
                     bookInventoryRecorder.Flush();
                     bookInventoryRecorder.Close();
                 }
@@ -105,8 +107,9 @@ namespace LibraryTerminal
                 if (rawText != null)
                 {
                     inventoryFields = rawText.Split('|'); //using string.split() method to split the string.
-                    bookStat = (BookStatus)Enum.Parse(typeof(BookStatus), inventoryFields[2]);
-                    bookDueDate = DateTime.Parse(inventoryFields[3]); // not need to validate since file is auto-generated
+                    bookStat = (BookStatus) Enum.Parse(typeof(BookStatus), inventoryFields[2]);
+                    bookDueDate =
+                        DateTime.Parse(inventoryFields[3]); // not need to validate since file is auto-generated
                     Books.Add(new Book(inventoryFields[0], inventoryFields[1], bookStat, bookDueDate));
                 }
                 // Leave the loop if the end of file is reached
@@ -115,15 +118,19 @@ namespace LibraryTerminal
                     break;
                 }
             }
+
             bookInventoryReader.Close();
         }
+
         public List<Book> SearchBookByAuthor(string author)
         {
-            var searchBookByAuthor = Books.Where(x => x.Author.Contains(author, StringComparison.InvariantCultureIgnoreCase)).Select(x => x).ToList();
+            var searchBookByAuthor =
+                Books.Where(x => x.Author.Contains(author, StringComparison.InvariantCultureIgnoreCase)).Select(x => x)
+                    .ToList();
             return searchBookByAuthor;
         }
 
-        public void GetBookSearchValue (string titleOrAuthor)
+        public void GetBookSearchValue(string titleOrAuthor)
         {
             IEnumerable<Book> searchResults = new List<Book>();
             string patronResponse;
@@ -146,11 +153,12 @@ namespace LibraryTerminal
         public List<Book> SearchBookByTitle(string theTitle)
         {
             IEnumerable<Book> searchResults = new List<Book>();
-            var searchBookByTitle = Books.Where(x => x.Title.Contains(theTitle, StringComparison.InvariantCultureIgnoreCase)).Select(x => x).ToList();
+            var searchBookByTitle =
+                Books.Where(x => x.Title.Contains(theTitle, StringComparison.InvariantCultureIgnoreCase)).Select(x => x)
+                    .ToList();
 
 
             return searchBookByTitle;
-
         }
 
         public void DisplaySearchResults(IEnumerable<Book> searchResults)
@@ -168,34 +176,29 @@ namespace LibraryTerminal
             }
         }
 
-        public void CheckOutBook(string title)
+        public void CheckOutBook()
         {
-            
-            //Communication.TalkToUser("What title are you checking out?");
-            //title = Communication.ListenToUser();
+            var title = "";
+            Communication.TalkToUser("What title are you checking out?");
+            title = Communication.ListenToUser();
 
-          
-            
-            foreach (Book book in Books.Where(x=>x.Title == title))
+
+            foreach (Book book in Books.Where(x => x.Title == title))
             {
-                
-                    book.DueDate = DateTime.Today.AddDays(14);
-                    book.Status = (BookStatus)1;
-                
+                book.DueDate = DateTime.Today.AddDays(14);
+                book.Status = BookStatus.CheckedOut;
             }
         }
 
-        public void ReturnABook(string title)
+        public void ReturnABook()
         {
-            
-            //Communication.TalkToUser("What title are you checking in?");
-            //title = Communication.ListenToUser();
-            foreach (Book book in Books.Where(x=>x.Title == title))
+            string title = "";
+            Communication.TalkToUser("What title are you checking in?");
+            title = Communication.ListenToUser();
+            foreach (Book book in Books.Where(x => x.Title == title))
             {
-             
-                    book.DueDate = DateTime.Now;
-                    book.Status = (BookStatus)0;
-               
+                book.DueDate = DateTime.Now;
+                book.Status = BookStatus.OnShelf;
             }
         }
     }
