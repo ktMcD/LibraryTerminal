@@ -152,7 +152,6 @@ namespace LibraryTerminal
 
         public List<Book> SearchBookByTitle(string theTitle)
         {
-            IEnumerable<Book> searchResults = new List<Book>();
             var searchBookByTitle =
                 Books.Where(x => x.Title.Contains(theTitle, StringComparison.InvariantCultureIgnoreCase)).Select(x => x)
                     .ToList();
@@ -183,7 +182,7 @@ namespace LibraryTerminal
             title = Communication.ListenToUser();
 
 
-            foreach (Book book in Books.Where(x => x.Title == title))
+            foreach (Book book in Books.Where(x => x.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase)))
             {
                 book.DueDate = DateTime.Today.AddDays(14);
                 book.Status = BookStatus.CheckedOut;
@@ -195,7 +194,7 @@ namespace LibraryTerminal
             string title = "";
             Communication.TalkToUser("What title are you checking in?");
             title = Communication.ListenToUser();
-            foreach (Book book in Books.Where(x => x.Title == title))
+            foreach (Book book in Books.Where(x => x.Title.Contains(title,StringComparison.InvariantCultureIgnoreCase)))
             {
                 book.DueDate = DateTime.Now;
                 book.Status = BookStatus.OnShelf;
