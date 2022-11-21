@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LIBRARY_TERMINAL
+namespace LibraryTerminal
 {
     public static class Communication
     {
