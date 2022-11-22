@@ -184,21 +184,70 @@ namespace LibraryTerminal
 
             foreach (Book book in Books.Where(x => x.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase)))
             {
+                if (book.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase) && book.Status == BookStatus.CheckedOut)
+                {
+                    Communication.TalkToUser($"The Title you entered, \"{title}\", is already checked out! Please try another book!{Environment.NewLine}");
+                    return;
+                }
                 book.DueDate = DateTime.Today.AddDays(14);
                 book.Status = BookStatus.CheckedOut;
+
             }
+
+            int titleResultsCount =
+                Books.Count(book => book.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase));
+
+            if (titleResultsCount == 0)
+            {
+                Communication.TalkToUser($"The Title you entered, \"{title}\", was not found! Please try again!{Environment.NewLine}");
+                return;
+            }
+
+            Communication.TalkToUser(
+                $"You have successfully checked out: {title}! Your Due date is {Books.Where(x => x.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase)).Select(x => x.DueDate.ToShortDateString()).FirstOrDefault()}! Thank you for using Library Terminal!{Environment.NewLine}");
         }
 
         public void ReturnABook()
-        {
+        {   
+            bool bookPastDue = false;
+            DateTime oldDueDate;
             string title = "";
             Communication.TalkToUser("What title are you checking in?");
             title = Communication.ListenToUser();
-            foreach (Book book in Books.Where(x => x.Title.Contains(title,StringComparison.InvariantCultureIgnoreCase)))
+            foreach (Book book in Books.Where(x => x.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase)))
             {
+                if (book.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase) && book.Status == BookStatus.OnShelf)
+                {
+                    Communication.TalkToUser($"The Title you entered, \"{title}\", is not checked out! Please try another book!{Environment.NewLine}");
+                    return;
+
+                }
+
+                oldDueDate = book.DueDate;
+                bookPastDue = oldDueDate < DateTime.Now;
+
                 book.DueDate = DateTime.Now;
                 book.Status = BookStatus.OnShelf;
             }
+
+            int titleResultsCount =
+                Books.Count(book => book.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase));
+
+            if (titleResultsCount == 0)
+            {
+                Communication.TalkToUser($"The Title you entered, \"{title}\", was not found! Please try again!{Environment.NewLine}");
+                return;
+            }
+
+            if (bookPastDue)
+            {
+                Communication.TalkToUser(
+                $"You have successfully checked in: {title}. Your book was returned late! Thank you for returning your book and using Library Terminal!{Environment.NewLine}");
+                return;
+            }
+            
+            Communication.TalkToUser(
+                $"You have successfully checked in: {title}! Thank you for returning your book and using Library Terminal!{Environment.NewLine}");
         }
     }
 }
