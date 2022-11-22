@@ -21,7 +21,7 @@ namespace LibraryTerminal
                 consoleResponse = ConsoleMenu(); // Gets response and validates range
                 // we won't get here unless we have a valid response
                 InitiatePatronRequest(consoleResponse.ToLower());
-                viewConsoleMenu = Navigation.TryAgain("");
+                viewConsoleMenu = Navigation.TryAgain("", "");
                 if (!viewConsoleMenu)
                 {
                     deweyDecimal.RecordBookInventory();
@@ -63,8 +63,7 @@ namespace LibraryTerminal
                 libraryPatronResponse = Validation.ValidatePatronResponse(libraryPatronResponse.ToLower());
                 if (libraryPatronResponse == "?")
                 {
-                    enterResponseAgain = Navigation.TryAgain("invalid entry");
-                    Console.WriteLine($"enterResponseAgain = {enterResponseAgain}");
+                    enterResponseAgain = Navigation.TryAgain("invalid entry", "");
                     if (!enterResponseAgain)
                     {
                         deweyDecimal.RecordBookInventory();

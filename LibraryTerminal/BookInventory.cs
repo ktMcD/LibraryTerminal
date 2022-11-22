@@ -178,76 +178,100 @@ namespace LibraryTerminal
         public void CheckOutBook()
         {
             var title = "";
-            Communication.TalkToUser("What title are you checking out?");
-            title = Communication.ListenToUser();
+            bool tryAgain = true;
 
-
-            foreach (Book book in Books.Where(x => x.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase)))
+            while (tryAgain)
             {
-                if (book.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase) && book.Status == BookStatus.CheckedOut)
+                tryAgain = false;
+                Communication.TalkToUser("What title are you checking out?");
+                title = Communication.ListenToUser();
+                foreach (Book book in Books.Where(x => x.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    Communication.TalkToUser($"The Title you entered, \"{title}\", is already checked out! Please try another book!{Environment.NewLine}");
-                    return;
+                    if (book.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase) && book.Status == BookStatus.CheckedOut)
+                    {
+                        tryAgain = Navigation.TryAgain("book is checked out", title);
+                        if (!tryAgain)
+                        {
+                            RecordBookInventory();
+                            Navigation.ThankYouAndGoodbye();
+                        }
+                    }
+                    book.DueDate = DateTime.Today.AddDays(14);
+                    book.Status = BookStatus.CheckedOut;
+                    Console.WriteLine("after set book status");
                 }
-                book.DueDate = DateTime.Today.AddDays(14);
-                book.Status = BookStatus.CheckedOut;
 
-            }
+                int titleResultsCount =
+                    Books.Count(book => book.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase));
 
-            int titleResultsCount =
-                Books.Count(book => book.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase));
-
-            if (titleResultsCount == 0)
-            {
-                Communication.TalkToUser($"The Title you entered, \"{title}\", was not found! Please try again!{Environment.NewLine}");
-                return;
+                if (titleResultsCount == 0)
+                {
+                    tryAgain = Navigation.TryAgain("book not found", title);
+                    if (!tryAgain)
+                    {
+                        RecordBookInventory();
+                        Navigation.ThankYouAndGoodbye();
+                    }
+                }
             }
 
             Communication.TalkToUser(
-                $"You have successfully checked out: {title}! Your Due date is {Books.Where(x => x.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase)).Select(x => x.DueDate.ToShortDateString()).FirstOrDefault()}! Thank you for using Library Terminal!{Environment.NewLine}");
+                $"You have successfully checked out: {title}. Your Due date is {Books.Where(x => x.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase)).Select(x => x.DueDate.ToShortDateString()).FirstOrDefault()}. Thank you for using Library Console.{Environment.NewLine}");
         }
 
         public void ReturnABook()
         {   
             bool bookPastDue = false;
+            bool tryAgain = true;
             DateTime oldDueDate;
             string title = "";
-            Communication.TalkToUser("What title are you checking in?");
-            title = Communication.ListenToUser();
-            foreach (Book book in Books.Where(x => x.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase)))
+            while (tryAgain)
             {
-                if (book.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase) && book.Status == BookStatus.OnShelf)
+                Communication.TalkToUser("What title are you checking in?");
+                title = Communication.ListenToUser();
+                tryAgain = false;
+                foreach (Book book in Books.Where(x => x.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    Communication.TalkToUser($"The Title you entered, \"{title}\", is not checked out! Please try another book!{Environment.NewLine}");
-                    return;
+                    if (book.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase) && book.Status == BookStatus.OnShelf)
+                    {
+                        tryAgain = Navigation.TryAgain("not checked out", title);
+                        if (!tryAgain)
+                        {
+                            RecordBookInventory();
+                            Navigation.ThankYouAndGoodbye();
+                        }
+                    }
 
+                    oldDueDate = book.DueDate;
+                    bookPastDue = oldDueDate < DateTime.Now;
+
+                    book.DueDate = DateTime.Now;
+                    book.Status = BookStatus.OnShelf;
                 }
 
-                oldDueDate = book.DueDate;
-                bookPastDue = oldDueDate < DateTime.Now;
+                int titleResultsCount =
+                    Books.Count(book => book.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase));
 
-                book.DueDate = DateTime.Now;
-                book.Status = BookStatus.OnShelf;
-            }
-
-            int titleResultsCount =
-                Books.Count(book => book.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase));
-
-            if (titleResultsCount == 0)
-            {
-                Communication.TalkToUser($"The Title you entered, \"{title}\", was not found! Please try again!{Environment.NewLine}");
-                return;
+                if (titleResultsCount == 0)
+                {
+                    tryAgain = Navigation.TryAgain("book not found", title);
+                    if (!tryAgain)
+                    {
+                        RecordBookInventory();
+                        Navigation.ThankYouAndGoodbye();
+                    }
+                }
             }
 
             if (bookPastDue)
             {
                 Communication.TalkToUser(
-                $"You have successfully checked in: {title}. Your book was returned late! Thank you for returning your book and using Library Terminal!{Environment.NewLine}");
+                $"You have successfully checked in: {title}. Your book was returned late. Thank you for returning your book and using Library Console.{Environment.NewLine}");
                 return;
             }
             
             Communication.TalkToUser(
-                $"You have successfully checked in: {title}! Thank you for returning your book and using Library Terminal!{Environment.NewLine}");
+                $"You have successfully checked in: {title}. Thank you for returning your book and using Library Console.{Environment.NewLine}");
         }
     }
 }

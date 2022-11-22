@@ -10,7 +10,6 @@ public class Program
         Console.WriteLine("Library Console says, \"Initializing...\"");
         Console.WriteLine();
         libraryVisit.UseLibraryConsole();
-        Console.WriteLine("Library Console says, \"Shutting down...\"");
         return;
     }
 }
