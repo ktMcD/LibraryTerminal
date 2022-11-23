@@ -7,7 +7,6 @@ public class Program
     {
         LibraryConsole libraryVisit = new LibraryConsole();
         Console.WriteLine();
-        Console.WriteLine("Library Console says, \"Initializing...\"");
         Console.WriteLine();
         libraryVisit.UseLibraryConsole();
         return;

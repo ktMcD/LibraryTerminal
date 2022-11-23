@@ -10,6 +10,7 @@ namespace LibraryTerminal
     public class BookInventory
     {
         public List<Book> Books = new List<Book>();
+        LibraryConsole librarian = new LibraryConsole();
 
         const string bookInventoryDocPath = @"c:\Temp\BookInventory.txt";
 
@@ -194,6 +195,7 @@ namespace LibraryTerminal
                         {
                             RecordBookInventory();
                             Navigation.ThankYouAndGoodbye();
+                            librarian.PowerButton("off");
                         }
                     }
                     book.DueDate = DateTime.Today.AddDays(14);
@@ -211,12 +213,14 @@ namespace LibraryTerminal
                     {
                         RecordBookInventory();
                         Navigation.ThankYouAndGoodbye();
+                        librarian.PowerButton("off");
                     }
                 }
             }
 
-            Communication.TalkToUser(
-                $"You have successfully checked out: {title}. Your Due date is {Books.Where(x => x.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase)).Select(x => x.DueDate.ToShortDateString()).FirstOrDefault()}. Thank you for using Library Console.{Environment.NewLine}");
+            Communication.TalkToUser($"You have successfully checked out: {title}." +
+                          $"Your Due date is {Books.Where(x => x.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase)).Select(x => x.DueDate.ToShortDateString()).FirstOrDefault()}." +
+                          $"Thank you for using Library Console.{Environment.NewLine}");
         }
 
         public void ReturnABook()
@@ -239,6 +243,7 @@ namespace LibraryTerminal
                         {
                             RecordBookInventory();
                             Navigation.ThankYouAndGoodbye();
+                            librarian.PowerButton("off");
                         }
                     }
 
@@ -259,6 +264,7 @@ namespace LibraryTerminal
                     {
                         RecordBookInventory();
                         Navigation.ThankYouAndGoodbye();
+                        librarian.PowerButton("off");
                     }
                 }
             }
