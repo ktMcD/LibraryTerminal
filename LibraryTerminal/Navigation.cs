@@ -8,7 +8,7 @@ namespace LibraryTerminal
 {
     public static class Navigation
     {
-        public static bool TryAgain(string theError)
+        public static bool TryAgain(string theError, string additionalInfo)
         {
             bool tryAgain;
             string libraryPatronResponse;
@@ -16,6 +16,15 @@ namespace LibraryTerminal
             {
                 case "invalid entry":
                     Communication.TalkToUser("Menu selections should only be entered as  alpha-numeric characters");
+                    break;
+                case "book is checked out":
+                    Communication.TalkToUser($"The Title you entered, \"{additionalInfo}\", is already checked out! Please try another book!{Environment.NewLine}");
+                    break;
+                case "book not found":
+                    Communication.TalkToUser($"The Title you entered, \"{additionalInfo}\", was not found! Please try again!{Environment.NewLine}");
+                    break;
+                case "not checked out":
+                    Communication.TalkToUser($"The Title you entered, \"{additionalInfo}\", is not checked out! Please try another book!{Environment.NewLine}");
                     break;
                 default:
                     break;
@@ -36,8 +45,8 @@ namespace LibraryTerminal
         {
             Communication.TalkToUser("Thank you for visiting Library Console today.");
             Communication.TalkToUser("Please come back another time.");
-
             Console.WriteLine();
+            Console.WriteLine("Library Console says, \"Shutting down...\"");
             Console.ReadKey();
             Environment.Exit(0);
         }
