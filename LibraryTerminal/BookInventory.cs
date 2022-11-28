@@ -10,7 +10,6 @@ namespace LibraryTerminal
     public class BookInventory
     {
         public List<Book> Books = new List<Book>();
-        LibraryConsole librarian = new LibraryConsole();
 
         const string bookInventoryDocPath = @"c:\Temp\BookInventory.txt";
 
@@ -195,7 +194,6 @@ namespace LibraryTerminal
                         {
                             RecordBookInventory();
                             Navigation.ThankYouAndGoodbye();
-                            librarian.PowerButton("off");
                         }
                     }
                     book.DueDate = DateTime.Today.AddDays(14);
@@ -213,7 +211,6 @@ namespace LibraryTerminal
                     {
                         RecordBookInventory();
                         Navigation.ThankYouAndGoodbye();
-                        librarian.PowerButton("off");
                     }
                 }
             }
@@ -243,7 +240,6 @@ namespace LibraryTerminal
                         {
                             RecordBookInventory();
                             Navigation.ThankYouAndGoodbye();
-                            librarian.PowerButton("off");
                         }
                     }
 
@@ -264,7 +260,6 @@ namespace LibraryTerminal
                     {
                         RecordBookInventory();
                         Navigation.ThankYouAndGoodbye();
-                        librarian.PowerButton("off");
                     }
                 }
             }

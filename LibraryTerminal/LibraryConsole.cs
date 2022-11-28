@@ -14,7 +14,7 @@ namespace LibraryTerminal
         {
             string consoleResponse = "";
             bool viewConsoleMenu = true;
-            PowerButton("on");
+            Navigation.PowerButton("on");
             deweyDecimal.DisplayBookList();
             while (viewConsoleMenu)
             {
@@ -101,19 +101,8 @@ namespace LibraryTerminal
                 case "x":
                     deweyDecimal.RecordBookInventory();
                     Navigation.ThankYouAndGoodbye();
-                    PowerButton("Off");
                     break;
             }
-        }
-
-        public void PowerButton(string onOrOff)
-        {
-            if (onOrOff == "on")
-            {
-                Communication.TalkToUser("Initializing...");
-                return;
-            }
-            Communication.TalkToUser("Shutting down...");
         }
     }
 }

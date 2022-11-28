@@ -41,12 +41,22 @@ namespace LibraryTerminal
             return true;
         }
 
+        public static void PowerButton(string onOrOff)
+        {
+            if (onOrOff == "on")
+            {
+                Communication.TalkToUser($"Library Console says, \"Initializing...\"{Environment.NewLine}");
+                return;
+            }
+            Communication.TalkToUser("Library Console says, \"Shutting down...\"");
+        }
+
         public static void ThankYouAndGoodbye()
         {
             Communication.TalkToUser("Thank you for visiting Library Console today.");
             Communication.TalkToUser("Please come back another time.");
             Console.WriteLine();
-            Console.WriteLine("Library Console says, \"Shutting down...\"");
+            PowerButton("off");
             Console.ReadKey();
             Environment.Exit(0);
         }
